@@ -25,9 +25,10 @@ module Gitolite
       raise "#{key} does not exist!" unless File.exists?(key)
 
       #Get our owner and location
-      File.basename(key) =~ /^(\w+(?:@(?:\w+\.)+\D{2,4})?)(?:@(\w+))?.pub$/i
-      owner = $1
-      location = $2 || ""
+      md = File.basename(key).match /([\w-.@]*?)(\@([^.]+))?\.pub$/i
+
+      owner = md[1] 
+      location = md[3] || ""
 
       #Get parts of the key
       type, blob, email = File.read(key).split
